@@ -1,0 +1,26 @@
+<code_scheme name="Project" version="173">
+  <option name="LINE_SEPARATOR" value="&#10;" />
+  <ApexCodeStyleSettings>
+    <option name="SOQL_AND_OR_PLACEMENT" value="2" />
+    <option name="USAGE_CASE_APEX_CHANGE_CASE_WHEN_FORMATTING" value="true" />
+    <option name="KEYWORD_CASE_APEX_CHANGE_CASE_WHEN_FORMATTING" value="true" />
+    <option name="KEYWORD_CASE_SOQL_SOSL_CHANGE_CASE_WHEN_FORMATTING" value="true" />
+    <option name="KEYWORD_CASE_VISUALFORCE_CHANGE_CASE_WHEN_FORMATTING" value="true" />
+    <option name="KEYWORD_CASE_AURA_CHANGE_CASE_WHEN_FORMATTING" value="true" />
+    <option name="APEX_DOC_REFORMAT_APEX_DOC" value="true" />
+  </ApexCodeStyleSettings>
+  <codeStyleSettings language="Apex">
+    <option name="KEEP_BLANK_LINES_IN_CODE" value="1" />
+    <option name="SPACE_BEFORE_ARRAY_INITIALIZER_LBRACE" value="true" />
+    <indentOptions>
+      <option name="CONTINUATION_INDENT_SIZE" value="4" />
+      <option name="USE_TAB_CHARACTER" value="true" />
+      <option name="SMART_TABS" value="true" />
+    </indentOptions>
+  </codeStyleSettings>
+  <codeStyleSettings language="CSS">
+    <indentOptions>
+      <option name="USE_TAB_CHARACTER" value="true" />
+    </indentOptions>
+  </codeStyleSettings>
+</code_scheme>

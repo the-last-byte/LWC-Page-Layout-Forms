@@ -1,0 +1,16 @@
+.fs_collapseButton[aria-expanded="true"] > lightning-icon {
+	transform: rotate(0deg);
+}
+
+.fs_collapseButton > lightning-icon {
+	width: initial;
+	height: initial;
+	transform-origin: 50% 50%;
+	transform: rotate(-90deg);
+	transition: transform .1s ease-in-out;
+	display: inline-table;
+}
+
+.fs_mainSection {
+	transition: all .4s ease-in-out;
+}

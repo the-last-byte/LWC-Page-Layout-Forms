@@ -1,0 +1,37 @@
+<!-- Form Layout Section -->
+<template>
+	<div class={outerClassName}>
+		<template if:true={showHeader}>
+			<h3 class="slds-section__title"
+				lwc:if={_isCollapsable}>
+				<button aria-controls="content"
+						aria-expanded={_isExpanded}
+						class="fs_collapseButton slds-button slds-section__title-action"
+						onclick={handleCollapseClick}
+						type="button">
+					<lightning-icon
+							class="section-icon slds-m-right_x-small slds-button__icon slds-icon_container forceIcon"
+							icon-name="utility:chevrondown"
+							size="xx-small">
+					</lightning-icon>
+					<span class="test-id__section-header-title slds-truncate">
+                        {header}
+                    </span>
+				</button>
+			</h3>
+			<h3 class="slds-section__title slds-theme_shade"
+				lwc:else>
+                <span class="section-header-title slds-p-horizontal_small">
+                    {header}
+                </span>
+			</h3>
+		</template>
+		<div aria-hidden={_isCollapsed}
+			 class="fs_mainSection slds-section__content section__content align-with-title slds-p-top_none"
+			 id="content"
+			 style={mainSectionStyle}>
+			<slot>
+			</slot>
+		</div>
+	</div>
+</template>

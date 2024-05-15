@@ -1,0 +1,21 @@
+.rdf_outerContainer button.slds-button_icon lightning-icon {
+	--slds-c-icon-color-foreground: var(--lwc-colorTextButtonInverse);
+	--slds-c-icon-color-foreground-default: var(--lwc-colorTextButtonInverse);
+}
+
+.rdf_outerContainer:hover button.slds-button_icon:not(:hover) lightning-icon {
+	--slds-c-icon-color-foreground: var(--lwc-colorTextIconDefault);
+	--slds-c-icon-color-foreground-default: var(--lwc-colorTextIconDefault);
+}
+
+.rdf_outerContainer button.slds-button_icon:hover lightning-icon {
+	--slds-c-icon-color-foreground: var(--lwc-brandTextLink);
+	--slds-c-icon-color-foreground-default: var(--lwc-brandTextLink);
+}
+
+.rdf_outerContainer button.slds-button_icon lightning-spinner {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}

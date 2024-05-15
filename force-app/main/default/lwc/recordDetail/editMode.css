@@ -1,0 +1,4 @@
+.inlineEditMode {
+	box-shadow: 0 2px 4px 4px rgba(0, 0, 0, .16);
+	border-radius: var(--lwc-borderRadiusMedium, 0.25rem);
+}

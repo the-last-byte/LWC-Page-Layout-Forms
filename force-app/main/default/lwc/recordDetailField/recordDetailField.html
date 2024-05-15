@@ -1,0 +1,65 @@
+<!-- Record Detail Field -->
+<template>
+	<template if:true={field}>
+		<div class={outerClassName}>
+
+			<!-- A label slot is required - otherwise IDs will be rewritten -->
+			<template lwc:if={displayEditMode}>
+				<slot class={labelOuterClassName} name="labelEditMode">
+				</slot>
+			</template>
+			<template lwc:else>
+				<slot class={labelOuterClassName} name="labelReadMode">
+				</slot>
+			</template>
+
+			<template if:false={isLabelHidden}>
+				<template if:true={field.collatedInlineHelpText}>
+					<div class="slds-form-element__icon">
+						<lightning-helptext aria-describedby="Help"
+											content={field.collatedInlineHelpText}>
+						</lightning-helptext>
+					</div>
+					<span class="slds-assistive-text">
+						Help
+					</span>
+				</template>
+			</template>
+
+			<div class="slds-form-element__control">
+				<div class="slds-form-element__static">
+					<!-- Using a slot as a lightning-input-field or
+						 lightning-output-field must be owned by the same
+						 component as the parent lightning-record-view-form or
+						 lightning-record-edit-form.  The field should
+						 have a variant of label-hidden. -->
+					<template lwc:if={displayEditMode}>
+						<slot name="fieldEditMode">
+						</slot>
+					</template>
+					<template lwc:else>
+						<slot name="fieldReadMode">
+						</slot>
+					</template>
+				</div>
+				<template if:true={showInlineEdit}>
+					<button class="slds-button slds-button_icon"
+							disabled={isInlineEditLoading}
+							onclick={handleInlineEditClick}
+							title={editText}>
+						<lightning-icon alternative-text={editText}
+										class={inlineEditButtonClassName}
+										icon-name="utility:edit"
+										size="xx-small">
+						</lightning-icon>
+						<template lwc:if={isInlineEditLoading}>
+							<lightning-spinner alternative-text="Loading inline edit"
+											   size="x-small">
+							</lightning-spinner>
+						</template>
+					</button>
+				</template>
+			</div>
+		</div>
+	</template>
+</template>

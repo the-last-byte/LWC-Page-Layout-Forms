@@ -1,0 +1,11 @@
+/* Fix for issue where lightning-input-field help text displays,
+	even when variant is label-hidden.  This behaviour is not
+	consistent with lightning-output-field. */
+.tlbc__recordDetailField lightning-input-field lightning-helptext {
+	display: none;
+}
+
+/* Fix for multi-line toasts */
+.toastMessage.forceActionsText {
+	white-space : pre-line !important;
+}

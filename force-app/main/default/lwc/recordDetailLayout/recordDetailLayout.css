@@ -1,0 +1,18 @@
+:host {
+	--horizontal-gap: var(--lwc-varSpacingHorizontalSmall);
+	--vertical-gap: 0;
+	--column-count: 2;
+	--column-min-width: var(--lwc-sizeMedium);
+}
+
+.c_formLayout {
+	/* Thanks for the idea Mike Herchel: https://css-tricks.com/an-auto-filling-css-grid-with-max-columns/ */
+	--gap-count: calc(var(--column-count) - 1);
+	--total-gap-width: calc(var(--gap-count) * var(--horizontal-gap));
+	--grid-item-max-width: calc((100% - var(--total-gap-width)) / var(--column-count));
+
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(max(var(--column-min-width), var(--grid-item-max-width)), 1fr));
+	grid-column-gap: var(--horizontal-gap);
+	grid-row-gap: var(--vertical-gap);
+}

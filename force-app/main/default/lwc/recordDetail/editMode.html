@@ -1,0 +1,147 @@
+<!-- editMode -->
+<template>
+	<div class={outerClassName}>
+		<lightning-record-edit-form density="auto"
+									lwc:ref="editForm"
+									object-api-name={_sObjectImport}
+									onerror={handleEditFormError}
+									onload={handleRecordLoad}
+									onsubmit={handleEditFormSubmit}
+									onsuccess={handleEditFormSuccess}
+									record-id={_recordId}
+									record-type-id={recordTypeId}>
+
+			<template if:true={_normalizedSections}>
+				<template for:each={_normalizedSections} for:item="section">
+
+					<template lwc:if={section.collatedHidden}>
+						<!-- Ignore this section -->
+					</template>
+					<template lwc:elseif={section.isControllingSection}>
+						<div aria-hidden="true" hidden="hidden" key={section.sectionId}>
+							<template for:each={section.fieldSets} for:item="fieldSet">
+								<template for:each={fieldSet.items} for:item="field">
+									<lightning-input-field disabled
+														   field-name={field.fieldImport}
+														   key={field.fieldId}
+														   read-only
+														   required="false"
+														   slot="fieldReadMode"
+														   value={field.collatedValue}
+														   variant="label-hidden">
+									</lightning-input-field>
+								</template>
+							</template>
+						</div>
+					</template>
+					<template lwc:else>
+						<c-record-detail-section header={section.heading}
+												 is-collapsable={_isCollapsable}
+												 key={section.sectionId}>
+							<template for:each={section.fieldSets} for:item="fieldSet">
+								<c-record-detail-layout column-count={fieldSet.columns}
+														key={fieldSet.fieldSetId}>
+									<template for:each={fieldSet.items} for:item="field">
+										<div class="tlbc__recordDetailField"
+											 if:false={field.collatedHidden}
+											 key={field.fieldId}>
+											<template if:false={field.isBlankSpace}>
+												<c-record-detail-field
+														displayed-field-form-variant={_displayedFieldFormVariant}
+														field={field}>
+													<span class="slds-form-element__label"
+														  slot="labelReadMode"
+														  title={field.collatedLabel}>
+														{field.collatedLabel}
+													</span>
+													<template lwc:if={field.isSystemField}>
+														<lightning-output-field field-name={field.fieldImport}
+																				slot="fieldReadMode"
+																				variant="label-hidden">
+														</lightning-output-field>
+													</template>
+													<template lwc:else>
+														<!-- We need to use an input field here to support default values -->
+														<lightning-input-field disabled
+																			   field-name={field.fieldImport}
+																			   read-only
+																			   required="false"
+																			   slot="fieldReadMode"
+																			   value={field.collatedValue}
+																			   variant="label-hidden">
+														</lightning-input-field>
+													</template>
+
+													<label class="slds-form-element__label"
+														   data-field-id={field.fieldId}
+														   for={field.fieldId}
+														   onclick={handleFieldLabelClick}
+														   slot="labelEditMode"
+														   title={field.collatedLabel}>
+														<template if:true={field.collatedRequired}>
+															<abbr class="slds-required" title="required">* </abbr>
+														</template>
+														{field.collatedLabel}
+													</label>
+													<!-- Have to use focusin and focusout as focus and blur are NOT fired by the
+														  lightning-input-field -->
+													<lightning-input-field
+															data-field-name={field.fieldImport.fieldApiName}
+															data-id={field.fieldId}
+															data-update-on-blur={field.updateOnBlur}
+															disabled={field.collatedDisabled}
+															field-name={field.fieldImport}
+															id={field.fieldId}
+															onchange={handleFieldChange}
+															onfocusout={handleFieldBlur}
+															required={field.collatedRequired}
+															slot="fieldEditMode"
+															value={field.collatedValue}
+															variant="label-hidden">
+													</lightning-input-field>
+
+												</c-record-detail-field>
+											</template>
+										</div>
+									</template>
+
+								</c-record-detail-layout>
+							</template>
+						</c-record-detail-section>
+					</template>
+				</template>
+
+				<div aria-hidden="true"
+					 hidden style="pointer-events: none; display: none; opacity: 0;"
+					 tabindex="-1">
+					<button lwc:ref="editFormSubmitButton" type="submit">
+					</button>
+					<button lwc:ref="editFormResetButton" type="reset">
+					</button>
+				</div>
+
+				<template lwc:if={isInlineEditActive}>
+					<div class="slds-grid slds-grid_align-center slds-p-bottom_medium">
+						<lightning-button class="slds-p-right_small"
+										  label="Cancel"
+										  onclick={handleInlineEditCancelClick}
+										  title="Cancel"
+										  variant="neutral">
+						</lightning-button>
+						<lightning-button label="Save"
+										  onclick={handleInlineEditSaveClick}
+										  title="Save"
+										  variant="brand">
+						</lightning-button>
+					</div>
+				</template>
+			</template>
+
+			<template if:true={isSaving}>
+				<lightning-spinner alternative-text="Saving...">
+				</lightning-spinner>
+			</template>
+
+		</lightning-record-edit-form>
+	</div>
+</template>

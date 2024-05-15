@@ -1,0 +1,56 @@
+<!-- readMode -->
+<template>
+	<lightning-record-view-form density="auto"
+								if:true={_recordId}
+								object-api-name={_sObjectImport}
+								onload={handleRecordLoad}
+								record-id={_recordId}>
+
+		<template if:true={_normalizedSections}>
+			<template for:each={_normalizedSections} for:item="section">
+				<template lwc:if={section.collatedHidden}>
+				</template>
+				<template lwc:elseif={section.isControllingSection}>
+				</template>
+				<template lwc:else>
+					<c-record-detail-section header={section.heading}
+											 is-collapsable={_isCollapsable}
+											 key={section.sectionId}>
+
+						<template for:each={section.fieldSets} for:item="fieldSet">
+							<c-record-detail-layout column-count={fieldSet.columns}
+													key={fieldSet.fieldSetId}>
+								<template for:each={fieldSet.items} for:item="field">
+									<div if:false={field.collatedHidden}
+										 key={field.fieldId}>
+										<template if:false={field.isBlankSpace}>
+											<c-record-detail-field
+													displayed-field-form-variant={_displayedFieldFormVariant}
+													field={field}
+													oninlineedit={handleInlineEditClick}>
+
+												<span class="slds-form-element__label"
+													  slot="labelReadMode"
+													  title={field.collatedLabel}>
+													{field.collatedLabel}
+												</span>
+
+												<lightning-output-field field-name={field.fieldImport}
+																		slot="fieldReadMode"
+																		variant="label-hidden">
+												</lightning-output-field>
+
+											</c-record-detail-field>
+										</template>
+									</div>
+								</template>
+							</c-record-detail-layout>
+						</template>
+
+					</c-record-detail-section>
+				</template>
+			</template>
+		</template>
+
+	</lightning-record-view-form>
+</template>
