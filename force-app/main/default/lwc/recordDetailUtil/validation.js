@@ -221,7 +221,7 @@ const trimmedStringOrDefault = (value, defaultValue) => {
  * @param {string|FieldId|*} value
  * @param {string} objectApiName
  * @param {T} [defaultValue=undefined]
- * @param {FieldId|T} value
+ * @return {FieldId|T} value
  *
  * @template T
  */

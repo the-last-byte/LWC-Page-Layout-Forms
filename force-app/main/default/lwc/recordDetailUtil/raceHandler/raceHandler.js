@@ -11,22 +11,6 @@ import {
 const __publicStateToPrivateState = new WeakMap();
 
 /**
- * @param {RaceConditionHandler} publicState
- * @return {RaceConditionHandlerPrivate}
- */
-const getPrivateState = (publicState) => {
-	__publicStateToPrivateState.get(publicState);
-}
-
-/**
- * @param {RaceConditionHandler} publicState
- * @param {RaceConditionHandlerPrivate} privateState
- */
-const setPrivateState = (publicState, privateState) => {
-	__publicStateToPrivateState.set(publicState, privateState);
-}
-
-/**
  * @module RaceConditionHandler
  */
 

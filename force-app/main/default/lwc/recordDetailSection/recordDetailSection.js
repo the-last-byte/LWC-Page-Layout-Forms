@@ -53,7 +53,7 @@ export default class FormLayoutSection extends LightningElement {
 
 	get outerClassName() {
 		let classes = "slds-m-vertical_none slds-section ";
-		if (!!this.header) {
+		if (this.header) {
 			classes += " has-header";
 		}
 		if (this._isCollapsed === false) {

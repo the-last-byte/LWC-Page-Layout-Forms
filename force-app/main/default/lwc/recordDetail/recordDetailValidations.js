@@ -16,7 +16,6 @@ const DATA_TYPES_THAT_UPDATE_ON_CHANGE = [
 	'Reference'
 ];
 
-let blankFieldCounter = 0;
 let fieldSetCounter = 0;
 
 /**
@@ -87,6 +86,8 @@ const _loadPageLayouts = (settings, sectionIdUniquenessSet, fieldSetIdUniqueness
 }
 
 /**
+ * Notes.  Blank spaces are not supported.  SF provided inconsistent data
+ * which breaks layouts - especially when creating a new record.
  *
  * @param {module:lightning/uiRecordApi.RecordLayout} layout
  * @param {RecordDetailUtil.Private.LayoutSettings} settings
@@ -120,15 +121,12 @@ const _getSectionsFromLayout = (layout, settings, sectionIdUniquenessSet, fieldS
 			for (let layoutItem, itemIndex = 0, itemCount = layoutRow.layoutItems.length; itemIndex < itemCount; itemIndex++) {
 				/** @type {module:lightning/uiRecordApi.RecordLayoutItem} */
 				layoutItem = layoutRow.layoutItems[itemIndex];
-				let hasBlankSpace = false;
-				let hasFields = false;
 				for (let layoutComponent, componentIndex = 0, componentCount = layoutItem.layoutComponents.length; componentIndex < componentCount; componentIndex++) {
 					/** @type {module:lightning/uiRecordApi.RecordLayoutComponent} */
 					layoutComponent = /** @type {module:lightning/uiRecordApi.RecordLayoutComponent} */ layoutItem.layoutComponents[componentIndex];
 					//@todo Support for compound fields (e.g. CreatedBy will also have CreatedDate here).
 					//Presently has to be rendered as separate fields.
 					if (layoutComponent.componentType === "Field") {
-						hasFields = true;
 						const fieldId = buildFieldId(
 							settings,
 							layoutComponent.apiName,
@@ -148,24 +146,8 @@ const _getSectionsFromLayout = (layout, settings, sectionIdUniquenessSet, fieldS
 							outputFields.push(_applyGettersToSafeField(safeField, settings));
 							usedFieldNames.add(layoutComponent.apiName);
 						}
-					} else if (layoutComponent.componentType === "EmptySpace") {
-						hasBlankSpace = true;
 					}
 				}
-				/* Empty space seems to be added using different rules for different layouts.
-					As incomplete data is provided in the layouts (especially bad for record creation)
-					we cannot use the system supplied blank spaces.
-				//Handle empty space
-				if (hasFields === false && hasBlankSpace === true) {
-					outputFields.push({
-						fieldId: buildBlankSpaceId(
-							settings,
-							fieldIdUniquenessSet
-						),
-						isBlankSpace: true
-					});
-				}
-				*/
 			}
 		}
 
@@ -227,7 +209,7 @@ const _getSectionsFromLayout = (layout, settings, sectionIdUniquenessSet, fieldS
 const getObjectOrFirstItem = (obj, ...keys) => {
 	for (let key, i = 0, j = keys.length; i < j; i++) {
 		key = keys[i];
-		if (obj.hasOwnProperty(key)) {
+		if (Object.prototype.hasOwnProperty.call(obj, key)) {
 			const result = obj[key];
 			if (!!result && typeof result === "object") {
 				return result;
@@ -320,19 +302,6 @@ const buildSectionId = (heading, index, settings, uniquenessSet) => {
  * @param {Set<string>} uniquenessSet
  * @return {string}
  */
-const buildBlankSpaceId = (settings, uniquenessSet) => {
-	blankFieldCounter++;
-	return makeUnique(
-		`${(settings.uniqueKey || "blank")}_${blankFieldCounter}`,
-		uniquenessSet
-	);
-}
-
-/**
- * @param {RecordDetailUtil.Private.LayoutSettings} settings
- * @param {Set<string>} uniquenessSet
- * @return {string}
- */
 const buildFieldSetId = (settings, uniquenessSet) => {
 	fieldSetCounter++;
 	return makeUnique(
@@ -381,19 +350,15 @@ const _applyGettersToSafeField = (field, settings) => {
 			},
 			collatedReadonlyOnEdit: {
 				enumerable: true,
-				get: () => field.isSystemField === true || field.readonly === true || field.updateable === false || (
-					field.override !== undefined && field.override.readonly === true
-				)
+				get: () => field.isSystemField === true || field.readonly === true || field.updateable === false
 			},
 			collatedReadonlyOnCreate: {
 				enumerable: true,
-				get: () => field.isSystemField === true || field.readonly === true || field.createable === false || (
-					field.override !== undefined && field.override.readonly === true
-				)
+				get: () => field.isSystemField === true || field.readonly === true || field.createable === false
 			},
 			collatedHidden: {
 				enumerable: true,
-				get: () => field.override === undefined ? false : field.override.hidden === true
+				get: () => false
 			},
 			collatedValue: {
 				enumerable: true,
@@ -470,7 +435,7 @@ const mergeDefaultValuesIntoRecord = (record, defaultValues) => {
 	const fields = Object.keys(defaultValues);
 	for (let i = 0, j = fields.length; i < j; i++) {
 		const fieldName = fields[i];
-		if (out.hasOwnProperty(fieldName) === false) {
+		if (Object.prototype.hasOwnProperty.call(out, fieldName) === false) {
 			out[fieldName] = defaultValues[fieldName];
 		}
 	}

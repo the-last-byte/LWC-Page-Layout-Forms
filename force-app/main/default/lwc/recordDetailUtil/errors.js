@@ -22,35 +22,35 @@ const extractMessagesFromError = (systemMessages, userMessages, stackMessages, e
 		systemMessages.push(err);
 	} else {
 		//Status
-		if (!!err.statusText) {
+		if (err.statusText) {
 			systemMessages.push(err.statusText);
 		}
 
 		//MS Specific
-		if (!!err.description) {
+		if (err.description) {
 			userMessages.push(err.description);
 			systemMessages.push(err.description);
 		}
 
 		//Handle page and field errors
-		if (!!err.body) {
+		if (err.body) {
 			const body = err.body;
-			if (!!body.stackTrace) {
+			if (body.stackTrace) {
 				stackMessages.push(body.stackTrace);
 			}
 			//Handle output errors, eg., validation rules errors, etc:
-			if (!!err.body.output) {
+			if (err.body.output) {
 				const output = err.body.output;
-				if (!!output) {
+				if (output) {
 					//Standard object level errors
-					if (!!output.errors) {
+					if (output.errors) {
 						output.errors.forEach(e => {
 							userMessages.push(e.message);
 							stackMessages.push(e.message);
 						});
 					}
 					//Field level errors
-					if (!!output.fieldErrors) {
+					if (output.fieldErrors) {
 						/* Example data structure
 						"fieldErrors": {
 							"Status__c": [
@@ -84,7 +84,7 @@ const extractMessagesFromError = (systemMessages, userMessages, stackMessages, e
 			}
 
 			//Handle output errors, eg., validation rules errors, etc:
-			if (!!err.body.output && !!err.body.output.errors) {
+			if (err.body.output && err.body.output.errors) {
 
 				err.body.output.errors.forEach(e => {
 					userMessages.push(e.message);
@@ -97,7 +97,7 @@ const extractMessagesFromError = (systemMessages, userMessages, stackMessages, e
 			//@TODO iS THIS A DUPE?
 			parseFieldErrors(systemMessages, userMessages, body.fieldErrors);
 
-			if (!!body.message) {
+			if (body.message) {
 				if (userMessages.length === 0) {
 					userMessages.push(body.message);
 				}
@@ -109,7 +109,7 @@ const extractMessagesFromError = (systemMessages, userMessages, stackMessages, e
 		}
 
 		//Handle possible messages
-		if (!!err.message) {
+		if (err.message) {
 			if (userMessages.length === 0) {
 				userMessages.push(err.message);
 			}
@@ -166,9 +166,9 @@ const parseFieldErrors = (systemMessages, userMessages, fieldErrors) => {
 		return;
 	}
 	for (let fieldName in fieldErrors) {
-		if (fieldErrors.hasOwnProperty(fieldName) === true) {
+		if (Object.prototype.hasOwnProperty.call(fieldErrors, fieldName) === true) {
 			const errors = fieldErrors[fieldName];
-			if (!!errors.length) {
+			if (errors.length) {
 				for (let i = 0, j = errors.length; i < j; i++) {
 					const error = errors[i];
 					const userString = `Field error on ${fieldName}: ${error.message}`;
