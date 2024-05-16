@@ -1,8 +1,5 @@
 A page layout based record view/edit/create form.
 
-Includes cap
-
-
 # Components
 
 ## Record Detail
