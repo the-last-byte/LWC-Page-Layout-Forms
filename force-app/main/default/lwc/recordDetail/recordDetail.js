@@ -583,7 +583,7 @@ export default class RecordDetail extends NavigationMixin(LightningElement) {
 	}
 
 	__rebuildSections() {
-		if (this.hasDataForLayoutInit() === true) {
+		if (this.hasDataForLayoutInit() === true && this.settings.recordUi) {
 			this._normalizedSections = normalizeAndValidateLayoutSections(this.settings);
 		} else {
 			this._normalizedSections = undefined;
