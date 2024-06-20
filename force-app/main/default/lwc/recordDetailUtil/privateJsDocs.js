@@ -91,4 +91,5 @@
  * @property {RecordDetailUtil.FormVariantEnum} layoutMode
  * @property {function(fieldName: string):*} getFieldValueMethod
  * @property {string[]} controllingFieldNames
+ * @property {Array<string>} [hiddenFieldNames]
  */

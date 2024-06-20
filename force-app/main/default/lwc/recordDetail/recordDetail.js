@@ -21,6 +21,7 @@ import TEMPLATE_READ from "./readMode.html";
 import {
 	DEFAULT_FIELD_VARIANT,
 	DEFAULT_FORM_VARIANT,
+	describeValueTypeForDisplay,
 	extractRecordName,
 	FIELD_VARIANTS,
 	FORM_VARIANT_AUTO,
@@ -35,7 +36,8 @@ import {
 	parseError,
 	RaceConditionHandler,
 	randomString,
-	trimmedStringOrDefault
+	trimmedStringOrDefault,
+	validateFieldId
 } from "c/recordDetailUtil";
 
 import DynamicRecordRepresentation from "./dynamicRecordRepresentation";
@@ -186,6 +188,11 @@ export default class RecordDetail extends NavigationMixin(LightningElement) {
 	 * @type {RecordDetailUtil.FormVariantEnum}
 	 */
 	_displayedFieldFormVariant;
+	/**
+	 * @type {string[]|undefined}
+	 * @private
+	 */
+	_hiddenFieldNames;
 
 	constructor() {
 		super();
@@ -375,6 +382,54 @@ export default class RecordDetail extends NavigationMixin(LightningElement) {
 		this._isCollapsable = value === true;
 	}
 
+	/**
+	 * @type {FieldId[]|undefined}
+	 * @private
+	 */
+	_hiddenFields;
+
+	@api
+	get hiddenFields() {
+		return this._hiddenFields;
+	}
+
+	// noinspection JSUnusedGlobalSymbols
+	set hiddenFields(values) {
+		try {
+			if (values == null) {
+				this._hiddenFields = undefined;
+			} else if (Array.isArray(values) === true) {
+				const valueCount = values.length;
+				if (valueCount === 0) {
+					this._hiddenFields = undefined;
+				} else {
+					const fieldNames = [];
+					for (let i = 0, j = values.length; i < j; i++) {
+						const value = values[i];
+						if (typeof value === "string") {
+							fieldNames.push(value);
+						} else if (validateFieldId(value)) {
+							fieldNames.push(value.fieldApiName);
+						} else {
+							this.handleError(new TypeError(
+								`Expected hidden-fields[${i}] to be a string or FieldId, got: ${describeValueTypeForDisplay(value)}.`
+							));
+							return;
+						}
+					}
+					this._hiddenFields = values;
+					this._hiddenFieldNames = fieldNames;
+				}
+			} else {
+				this.handleError(new TypeError(
+					`Expected hidden-fields to be an Array, got: ${describeValueTypeForDisplay(values)}.`
+				));
+			}
+		} catch (ex) {
+			this.handleError(ex);
+		}
+	}
+
 	get isEditMode() {
 		return this._displayedFormVariant === FORM_VARIANT_EDIT || this._specifiedFormVariant === FORM_VARIANT_CREATE;
 	}
@@ -402,7 +457,8 @@ export default class RecordDetail extends NavigationMixin(LightningElement) {
 			recordUi: this.recordUi,
 			layoutMode: this._displayedFormVariant,
 			getFieldValueMethod: this._getFieldValue,
-			controllingFieldNames: this.controllingFieldNames
+			controllingFieldNames: this.controllingFieldNames,
+			hiddenFieldNames: this._hiddenFieldNames
 		};
 	}
 
@@ -663,6 +719,9 @@ export default class RecordDetail extends NavigationMixin(LightningElement) {
 
 	handleRecordLoad(ev) {
 		try {
+			if (ev.detail === undefined) {
+				return;
+			}
 			ev.stopPropagation();
 			const isFirstLoad = this.recordRepresentation === undefined;
 			let hasLayoutChanged = false;
