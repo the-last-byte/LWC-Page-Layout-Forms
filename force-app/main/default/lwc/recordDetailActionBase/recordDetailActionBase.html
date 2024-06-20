@@ -1,0 +1,20 @@
+<!-- Record Detail Action Base -->
+<template>
+	<div style="min-height: 75px; position:relative;">
+		<c-record-detail default-field-values={defaultFieldValues}
+						 form-variant={formVariant}
+						 hidden-fields={hiddenFields}
+						 is-collapsable
+						 lwc:ref="recordDetail"
+						 onerror={handleFormError}
+						 onload={handleFormLoad}
+						 onsave={handleFormSave}
+						 record-id={recordId}
+						 target-object={targetObject}>
+		</c-record-detail>
+		<template if:true={isLoading}>
+			<lightning-spinner alternative-text="Loading...">
+			</lightning-spinner>
+		</template>
+	</div>
+</template>

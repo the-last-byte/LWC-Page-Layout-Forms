@@ -1,0 +1,34 @@
+<!-- Record Detail Action Buttons -->
+<template>
+	<div class={buttonClassName}>
+		<slot>
+		</slot>
+		<template if:true={showButtons}>
+			<lightning-button label="Cancel"
+							  onclick={state.handleCancelClick}
+							  variant="neutral">
+			</lightning-button>
+			<lightning-button class="slds-m-left_x-small"
+							  disabled={state.isLoading}
+							  if:true={state.showResetButton}
+							  label="Reset"
+							  onclick={state.handleResetClick}
+							  variant="neutral">
+			</lightning-button>
+			<template if:true={state.showSaveAndNewButton}>
+				<lightning-button class="slds-m-left_x-small"
+								  disabled={state.isLoading}
+								  label="Save & New"
+								  onclick={state.handleSaveAndNewClick}
+								  variant="neutral">
+				</lightning-button>
+			</template>
+			<lightning-button class="slds-m-left_x-small"
+							  disabled={state.isLoading}
+							  label="Save"
+							  onclick={state.handleSaveClick}
+							  variant="brand">
+			</lightning-button>
+		</template>
+	</div>
+</template>

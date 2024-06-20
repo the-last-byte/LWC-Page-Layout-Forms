@@ -383,7 +383,7 @@ export default class RecordDetail extends NavigationMixin(LightningElement) {
 	}
 
 	/**
-	 * @type {FieldId[]|undefined}
+	 * @type {Array<FieldId|string>|undefined}
 	 * @private
 	 */
 	_hiddenFields;

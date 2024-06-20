@@ -93,3 +93,17 @@
  * @property {string[]} controllingFieldNames
  * @property {Array<string>} [hiddenFieldNames]
  */
+
+/**
+ * @typedef RecordDetailUtil.Private.ButtonStateData
+ * @memberOf RecordDetailUtil.Private
+ * @name ButtonStateData
+ *
+ * @property {boolean} isLoading
+ * @property {boolean} showResetButton
+ * @property {boolean} showSaveAndNewButton
+ *
+ * @property {function} handleCancelClick
+ * @property {function} handleSaveAndNewClick
+ * @property {function} handleSaveClick
+ */
