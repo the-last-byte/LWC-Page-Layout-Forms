@@ -400,22 +400,6 @@ const _applyGettersToSafeLayoutSection = section => {
 }
 
 /**
- * @param {RecordDetailUtil.Private.CollatedLayoutSection[]} sections
- * @param {RecordDetailUtil.Private.LayoutSettings} settings
- * @return {RecordDetailUtil.Private.CollatedLayoutSection[]}
- */
-const cloneCollatedSections = (sections, settings) => {
-	const result = [];
-	for (let i = 0, j = sections.length; i < j; i++) {
-		result.push(_applyGettersToSafeLayoutSection(
-			{...sections[i]},
-			settings
-		));
-	}
-	return result;
-}
-
-/**
  * Merges in missing (not blank) values
  * @param {Record<string, *>} record
  * @param {Record<string, *>} defaultValues
@@ -462,7 +446,6 @@ const extractLayoutFromRecordUi = (recordUi, layoutMode, objectApiName, recordId
 
 export {
 	normalizeAndValidateLayoutSections,
-	cloneCollatedSections,
 	mergeDefaultValuesIntoRecord,
 	extractLayoutFromRecordUi
 };
