@@ -181,20 +181,17 @@ const _getSectionsFromLayout = (layout, settings, sectionIdUniquenessSet, fieldS
 				sectionIdUniquenessSet.add(sectionId);
 
 				/** @type {RecordDetailUtil.Private.CollatedLayoutSection} */
-				const collatedSection = _applyGettersToSafeLayoutSection(
-					{
-						sectionId,
-						isHidden: false,
-						heading: section.useHeading === true
-							? heading
-							: undefined,
-						fieldSets: [
-							fieldSet
-						],
-						isControllingSection: false
-					},
-					settings
-				);
+				const collatedSection = _applyGettersToSafeLayoutSection({
+					sectionId,
+					isHidden: false,
+					heading: section.useHeading === true
+						? heading
+						: undefined,
+					fieldSets: [
+						fieldSet
+					],
+					isControllingSection: false
+				});
 				outputSections.push(collatedSection);
 				previousSection = collatedSection;
 			} else {
@@ -358,7 +355,7 @@ const _applyGettersToSafeField = (field, settings) => {
 			},
 			collatedHidden: {
 				enumerable: true,
-				get: () => false
+				get: () => settings.hiddenFieldNames !== undefined && settings.hiddenFieldNames.includes(field.fieldImport.fieldApiName) === true
 			},
 			collatedValue: {
 				enumerable: true,
@@ -371,10 +368,9 @@ const _applyGettersToSafeField = (field, settings) => {
 
 /**
  * @param {(RecordDetailUtil.Private.SafeLayoutSection|RecordDetailUtil.Private.CollatedLayoutSection)} section
- * @param {RecordDetailUtil.Private.LayoutSettings} settings
  * @return {RecordDetailUtil.Private.CollatedLayoutSection}
  */
-const _applyGettersToSafeLayoutSection = (section, settings) => {
+const _applyGettersToSafeLayoutSection = section => {
 	Object.defineProperties(
 		section,
 		{
@@ -401,22 +397,6 @@ const _applyGettersToSafeLayoutSection = (section, settings) => {
 		}
 	);
 	return section;
-}
-
-/**
- * @param {RecordDetailUtil.Private.CollatedLayoutSection[]} sections
- * @param {RecordDetailUtil.Private.LayoutSettings} settings
- * @return {RecordDetailUtil.Private.CollatedLayoutSection[]}
- */
-const cloneCollatedSections = (sections, settings) => {
-	const result = [];
-	for (let i = 0, j = sections.length; i < j; i++) {
-		result.push(_applyGettersToSafeLayoutSection(
-			{...sections[i]},
-			settings
-		));
-	}
-	return result;
 }
 
 /**
@@ -466,7 +446,6 @@ const extractLayoutFromRecordUi = (recordUi, layoutMode, objectApiName, recordId
 
 export {
 	normalizeAndValidateLayoutSections,
-	cloneCollatedSections,
 	mergeDefaultValuesIntoRecord,
 	extractLayoutFromRecordUi
 };

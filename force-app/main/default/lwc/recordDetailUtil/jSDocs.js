@@ -43,3 +43,32 @@
  *
  * @property {function(field: FieldId): *} getFieldValue
  */
+
+/**
+ * @namespace RecordDetailUtil.RecordDetailModal
+ */
+
+/**
+ * @typedef RecordDetailUtil.RecordDetailModal.RecordDetailModalOptions
+ * @memberOf RecordDetailUtil.RecordDetailModal
+ * @name RecordDetailModalOptions
+ *
+ * @property {string|undefined} [recordId]
+ * 	The record ID.  If provided, this will be an "Edit" modal, otherwise
+ * 	this will be a "Create" modal.
+ *
+ * @property {string|undefined} [parentRecordId]
+ * 	The parent record ID.  Used for navigation after record creation.
+ *
+ * @property {ObjectId} targetObject
+ * @property {Array<FieldId|string>} [hiddenFields]
+ * @property {boolean=false} [hideSaveAndNewButton]
+ * @property {boolean=false} [showResetButton]
+ * @property {string} [objectLabel]
+ * 	Provides the ability to override the object label in the modal.  Useful
+ * 	when a single object shares distinct record types. 	If not provided,
+ * 	the actual object label will be used.
+ * @property {Record<string, *>} [defaultFieldValues]
+ * @property {LightningElement} [caller]
+ * 	Optional, but required for error toast messages to display.
+ */

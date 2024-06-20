@@ -1,0 +1,32 @@
+<!-- Record Detail Quick Action -->
+<template>
+	<lightning-quick-action-panel header={label}>
+		<template if:false={hideForm}>
+			<c-record-detail-action-base default-field-values={defaultFieldValues}
+										 hidden-fields={hiddenFields}
+										 hide-save-and-new-button={hideSaveAndNewButton}
+										 lwc:ref="detailBase"
+										 onbuttonstate={handleButtonState}
+										 oncancel={handleCancel}
+										 ondescribed={handleObjectDescribed}
+										 onsave={handleSave}
+										 onsaveandnew={handleSaveAndNew}
+										 parent-record-id={parentRecordId}
+										 record-id={recordId}
+										 show-reset-button={showResetButton}
+										 target-object={_targetObject}>
+			</c-record-detail-action-base>
+		</template>
+		<slot>
+		</slot>
+		<div slot>
+			<c-record-detail-action-buttons config={buttonStateConfig}
+											hide-buttons={hideButtons}
+											is-quick-action>
+				<slot name="buttons">
+
+				</slot>
+			</c-record-detail-action-buttons>
+		</div>
+	</lightning-quick-action-panel>
+</template>

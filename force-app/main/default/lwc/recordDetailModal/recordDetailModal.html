@@ -1,0 +1,24 @@
+<!-- Record Detail Modal -->
+<template>
+	<lightning-modal-header label={label}>
+	</lightning-modal-header>
+	<lightning-modal-body>
+		<c-record-detail-action-base default-field-values={defaultFieldValues}
+									 hidden-fields={hiddenFields}
+									 hide-save-and-new-button={hideSaveAndNewButton}
+									 onbuttonstate={handleButtonState}
+									 oncancel={handleCancel}
+									 ondescribed={handleObjectDescribed}
+									 onsave={handleSave}
+									 onsaveandnew={handleSaveAndNew}
+									 parent-record-id={parentRecordId}
+									 record-id={recordId}
+									 show-reset-button={showResetButton}
+									 target-object={targetObject}>
+		</c-record-detail-action-base>
+	</lightning-modal-body>
+	<lightning-modal-footer>
+		<c-record-detail-action-buttons config={buttonStateConfig}>
+		</c-record-detail-action-buttons>
+	</lightning-modal-footer>
+</template>

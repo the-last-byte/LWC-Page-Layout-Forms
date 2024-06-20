@@ -256,6 +256,22 @@ const fieldIdOrDefault = (value, objectApiName, defaultValue) => {
 };
 
 /**
+ * @param {string|FieldId|*} value
+ * @return {boolean}
+ *
+ * @template T
+ */
+const validateFieldId = (value) => {
+	if (objectOrDefault(value) === undefined) {
+		return false;
+	}
+	if (trimmedStringOrDefault(value.fieldApiName) === undefined) {
+		return false;
+	}
+	return trimmedStringOrDefault(value.objectApiName) !== undefined;
+};
+
+/**
  * @param {string|ObjectId|*} value
  * @param {T} [defaultValue=undefined]
  * @return {ObjectId|T} value
@@ -296,5 +312,6 @@ export {
 	normalizeAndValidateStringChoice,
 	trimmedStringOrDefault,
 	fieldIdOrDefault,
-	objectIdOrDefault
+	objectIdOrDefault,
+	validateFieldId
 };

@@ -41,7 +41,8 @@ import {
 	normalizeStringChoice,
 	objectIdOrDefault,
 	objectOrDefault,
-	trimmedStringOrDefault
+	trimmedStringOrDefault,
+	validateFieldId
 } from "./validation";
 
 //Shamelessly stolen from https://stackoverflow.com/questions/6491463/accessing-nested-javascript-objects-and-arrays-by-string-path
@@ -126,5 +127,6 @@ export {
 	normalizeAndValidateStringChoice,
 	trimmedStringOrDefault,
 	fieldIdOrDefault,
-	objectIdOrDefault
+	objectIdOrDefault,
+	validateFieldId
 };
