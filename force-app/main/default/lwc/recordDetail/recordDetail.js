@@ -875,10 +875,10 @@ export default class RecordDetail extends NavigationMixin(LightningElement) {
 	async handleEditFormSubmit(ev) {
 		try {
 			ev.stopPropagation();
+			ev.preventDefault();
 
 			//Pre-commit validations
 			if (this._validateFields() === false) {
-				ev.preventDefault();
 				return;
 			}
 
@@ -896,11 +896,12 @@ export default class RecordDetail extends NavigationMixin(LightningElement) {
 					: objectOrDefault(await this._submitMethod(record));
 				if (!record) {
 					this.isSaving = false;
-					ev.preventDefault();
 					return;
 				}
-			} finally {
+			} catch (ex) {
+				this.handleError(ex);
 				this.isSaving = false;
+				return;
 			}
 			this.isSaving = true;
 			this.refs.editForm.submit(record);
