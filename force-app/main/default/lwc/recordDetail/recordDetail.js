@@ -1068,16 +1068,27 @@ export default class RecordDetail extends NavigationMixin(LightningElement) {
 		);
 	};
 
+	@api reportValidity() {
+		if (this._specifiedFormVariant === FORM_VARIANT_CREATE || this._displayedFormVariant === FORM_VARIANT_EDIT) {
+			return this._validateFields();
+		} else {
+			this.handleError(new Error("Unable to programmatically save the form.  The form is currently not in edit mode."));
+		}
+		return false;
+	}
+
 	@api save() {
 		if (this._specifiedFormVariant === FORM_VARIANT_CREATE || this._displayedFormVariant === FORM_VARIANT_EDIT) {
 			if (this.isReady === true && this.isSaving === false) {
 				if (this._validateFields() === true) {
 					this.refs.editFormSubmitButton.click();
+					return true;
 				}
 			}
 		} else {
 			this.handleError(new Error("Unable to programmatically save the form.  The form is currently not in edit mode."));
 		}
+		return false;
 	}
 
 	@api reset() {
