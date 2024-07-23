@@ -249,8 +249,12 @@ const _buildSafeFieldFromLayoutComponent = (fieldId, fieldImport, layoutItem, la
 		inlineHelpText: trimmedStringOrDefault(fieldDescribe.inlineHelpText),
 		readonly: false,
 		required: layoutItem.required === true,
-		createable: fieldDescribe.createable === true && settings.objectDescribe.createable === true,
-		updateable: fieldDescribe.updateable === true && settings.objectDescribe.updateable === true,
+		createable: fieldDescribe.createable === true &&
+			layoutItem.editableForNew === true &&
+			settings.objectDescribe.createable === true,
+		updateable: fieldDescribe.updateable === true &&
+			layoutItem.editableForUpdate === true &&
+			settings.objectDescribe.updateable === true,
 		isBlankSpace: false,
 		labelId: `${fieldId}_label`,
 		variant: settings.defaultVariant,
